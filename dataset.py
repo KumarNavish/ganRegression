@@ -110,7 +110,7 @@ def get_dataset(n_instance=1000, scenario="linear", seed=1):
         X_valid = X_valid.reshape(-1, 1)
 
     elif scenario == "ailerons":
-        scaling = 1000
+        scaling = 10000
 
         my_data_train = np.genfromtxt(f"../data/Ailerons/ailerons.data", delimiter=',')
         X_train = my_data_train[:, 0:40]
