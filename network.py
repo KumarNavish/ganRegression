@@ -108,6 +108,7 @@ def build_generator(network):
 
         model = Model(inputs=[noise, x], outputs=output)
 
+
     elif network.architecture == 5:
         x = Input(shape=(network.x_input_size,), dtype='float')
         x_output = Dense(150, activation=activation, kernel_initializer=kerner_initializer)(x)
@@ -123,6 +124,25 @@ def build_generator(network):
         output = Dense(75, activation=activation, kernel_initializer=kerner_initializer)(output)
         output = Dense(75, activation=activation, kernel_initializer=kerner_initializer)(output)
         output = Dense(75, activation=activation, kernel_initializer=kerner_initializer)(output)
+        output = Dense(network.y_input_size, activation="linear", kernel_initializer=random_normal)(output)
+
+        model = Model(inputs=[noise, x], outputs=output)
+
+    elif network.architecture == 'MLP_inspired':
+        x = Input(shape=(network.x_input_size,), dtype='float')
+        x_output = Dense(16, activation=activation, kernel_initializer=kerner_initializer)(x)
+
+        noise = Input(shape=(network.z_input_size,))
+        noise_output = Dense(16, activation=activation, kernel_initializer=kerner_initializer)(noise)
+
+        concat = concatenate([x_output, noise_output])
+
+        output = Dense(32, activation=activation, kernel_initializer=kerner_initializer)(concat)
+        output = Dense(128, activation=activation, kernel_initializer=kerner_initializer)(output)
+        output = Dense(32, activation=activation, kernel_initializer=kerner_initializer)(output)
+        output = Dense(16, activation=activation, kernel_initializer=kerner_initializer)(output)
+        # output = Dense(16, activation=activation, kernel_initializer=kerner_initializer)(output)
+        # output = Dense(50, activation=activation, kernel_initializer=kerner_initializer)(output)
         output = Dense(network.y_input_size, activation="linear", kernel_initializer=random_normal)(output)
 
         model = Model(inputs=[noise, x], outputs=output)
@@ -241,7 +261,23 @@ def build_discriminator(network):
         validity = Dense(1, activation="sigmoid", kernel_initializer=random_uniform)(concat)
 
         model = Model(inputs=[x, label], outputs=validity)
+# 16, 32, 128, 32, 16
+    elif network.architecture == 'MLP_inspired':
+        x = Input(shape=(network.x_input_size,), dtype='float')
+        x_output = Dense(16, activation=activation, kernel_initializer=kerner_initializer)(x)
 
+        label = Input(shape=(network.y_input_size,))
+        label_output = Dense(16, activation=activation, kernel_initializer=kerner_initializer)(label)
+
+        concat = concatenate([x_output, label_output])
+        concat = Dense(32, activation=activation, kernel_initializer=kerner_initializer)(concat)
+        concat = Dense(128, activation=activation, kernel_initializer=kerner_initializer)(concat)
+        concat = Dense(32, activation=activation, kernel_initializer=kerner_initializer)(concat)
+        concat = Dense(16, activation=activation, kernel_initializer=kerner_initializer)(concat)
+        # concat = Dense(25, activation=activation, kernel_initializer=kerner_initializer)(concat)
+        validity = Dense(1, activation="sigmoid", kernel_initializer=random_uniform)(concat)
+
+        model = Model(inputs=[x, label], outputs=validity)
     else:
         raise NotImplementedError("Architecture does not exist")
 

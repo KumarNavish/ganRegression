@@ -100,13 +100,13 @@ def plot_datadistrib_joint(y, y_pred, y_pred2, y_pred3, title, width=0.1, prefix
     bins = np.linspace(min_y, max_y, intervals)
     plt.clf()
     if y is not None:
-        plt.hist(y, alpha=0.5, color="g", label="True", bins=bins)
+        plt.hist(y, alpha=0.5, color="g", histtype='step', label="True", bins=bins)
     if y_pred is not None:
-        plt.hist(y_pred, alpha=0.5, color="r", label="LR", bins=bins)
+        plt.hist(y_pred, alpha=0.5, color="r", histtype='step', label="DNN", bins=bins)
     if y_pred2 is not None:
-        plt.hist(y_pred2, alpha=0.5, color="b", label="GAN", bins=bins)
+        plt.hist(y_pred2, alpha=0.5, color="b", histtype='step', label="GAN", bins=bins)
     if y_pred3 is not None:
-        plt.hist(y_pred3, alpha=0.5, color="orange", label="GP", bins=bins)
+        plt.hist(y_pred3, alpha=0.5, color="orange", histtype='step', label="GP", bins=bins)
     plt.legend(loc="upper right")
     plt.title(title)
 

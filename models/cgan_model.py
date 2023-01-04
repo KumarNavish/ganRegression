@@ -64,13 +64,10 @@ class CGAN():
             self.z_input_size = exp_config.model.z_input_size
             self.architecture = 3
         else:
-            self.x_input_size = 1
+            self.x_input_size = 674
             self.y_input_size = 1
             self.z_input_size = exp_config.model.z_input_size
-            if self.scenario == "linear" or self.scenario == "sinus":
-                self.architecture = 1
-            else:
-                self.architecture = 2
+            self.architecture = 'MLP_inspired'
 
         if exp_config.model.architecture is not None:
             self.architecture = exp_config.model.architecture
